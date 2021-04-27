@@ -19,11 +19,13 @@
 *	along with The Chili DirectX Framework.  If not, see <http://www.gnu.org/licenses/>.  *
 ******************************************************************************************/
 #include "MainWindow.h"
+#include <Windows.h>
 #include "Resource.h"
 #include "Graphics.h"
 #include "ChiliException.h"
 #include "Game.h"
 #include <assert.h>
+#include <codecvt>
 
 MainWindow::MainWindow( HINSTANCE hInst,wchar_t * pArgs )
 	:
@@ -51,6 +53,12 @@ MainWindow::MainWindow( HINSTANCE hInst,wchar_t * pArgs )
 		wr.left,wr.top,wr.right - wr.left,wr.bottom - wr.top,
 		nullptr,nullptr,hInst,this );
 
+	//hWnd = CreateWindow(L"STATIC", L"H", WS_VISIBLE | WS_CHILD | SS_LEFT,
+	//	0,0,100,100, hWnd, NULL, hInst, NULL);
+	
+	ShowValues(hInst);
+
+
 	// throw exception if something went terribly wrong
 	if( hWnd == nullptr )
 	{
@@ -60,7 +68,9 @@ MainWindow::MainWindow( HINSTANCE hInst,wchar_t * pArgs )
 
 	// show and update
 	ShowWindow( hWnd,SW_SHOWDEFAULT );
+	
 	UpdateWindow( hWnd );
+	
 }
 
 MainWindow::~MainWindow()
@@ -82,6 +92,127 @@ bool MainWindow::IsMinimized() const
 void MainWindow::ShowMessageBox( const std::wstring& title,const std::wstring& message ) const
 {
 	MessageBox( hWnd,message.c_str(),title.c_str(),MB_OK );
+}
+
+void MainWindow::SetText(std::string a)
+{
+	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+	std::wstring wide = converter.from_bytes(a);
+	LPCWSTR result = wide.c_str();
+	angle = result;
+	
+	SetWindowText(hWndExample, angle);
+
+	//if (hit) {
+	//	SetWindowText(hWndExample, angle);
+	//	hit = false;
+	//}
+	//else
+	//{
+	//	SetWindowText(hWndExample, angle);
+	//	hit = true;
+	//}
+	//RedrawWindow(hWndExample, NULL, NULL, RDW_ERASE);
+	//ShowWindow(hWndExample, SW_HIDE);
+	//ShowWindow(hWndExample, SW_SHOW);
+}
+
+void MainWindow::ShowValues(HINSTANCE hInst)
+{
+	hWndExample = CreateWindow(L"STATIC", L"TestTestTest", WS_VISIBLE | WS_OVERLAPPED | WS_DLGFRAME,
+		0, 0, 100, 100, hWnd, NULL, hInst, NULL);
+}
+
+void MainWindow::CreateDeviceIndependentResources()
+{
+	HRESULT hr = D2D1CreateFactory(
+		D2D1_FACTORY_TYPE_SINGLE_THREADED,
+		&pD2DFactory_
+	);
+
+	if (SUCCEEDED(hr))
+	{
+		hr = DWriteCreateFactory(
+			DWRITE_FACTORY_TYPE_SHARED,
+			__uuidof(IDWriteFactory),
+			reinterpret_cast<IUnknown**>(&pDWriteFactory_)
+		);
+	}
+
+	wszText_ = L"Hello World using  DirectWrite!";
+	cTextLength_ = (UINT32)wcslen(wszText_);
+
+	if (SUCCEEDED(hr))
+	{
+		hr = pDWriteFactory_->CreateTextFormat(
+			L"Gabriola",                // Font family name.
+			NULL,                       // Font collection (NULL sets it to use the system font collection).
+			DWRITE_FONT_WEIGHT_REGULAR,
+			DWRITE_FONT_STYLE_NORMAL,
+			DWRITE_FONT_STRETCH_NORMAL,
+			72.0f,
+			L"en-us",
+			&pTextFormat_
+		);
+	}
+
+	// Center align (horizontally) the text.
+	if (SUCCEEDED(hr))
+	{
+		hr = pTextFormat_->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
+	}
+
+	if (SUCCEEDED(hr))
+	{
+		hr = pTextFormat_->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
+	}
+
+}
+
+void MainWindow::CreateDeviceResources(HWND hwnd_)
+{
+	RECT rc;
+	GetClientRect(hwnd_, &rc);
+
+	D2D1_SIZE_U size = D2D1::SizeU(rc.right - rc.left, rc.bottom - rc.top);
+
+	if (!pRT_)
+	{
+		// Create a Direct2D render target.
+		auto hr = pD2DFactory_->CreateHwndRenderTarget(
+			D2D1::RenderTargetProperties(),
+			D2D1::HwndRenderTargetProperties(
+				hwnd_,
+				size
+			),
+			&pRT_
+		);
+
+		// Create a black brush.
+		if (SUCCEEDED(hr))
+		{
+			hr = pRT_->CreateSolidColorBrush(
+				D2D1::ColorF(D2D1::ColorF::Black),
+				&pBlackBrush_
+			);
+		}
+	}
+}
+
+void MainWindow::DiscardDeviceResources()
+{
+	SafeRelease(&pRT_);
+	SafeRelease(&pBlackBrush_);
+}
+
+void MainWindow::DrawText()
+{
+	/*D2D1_RECT_F layoutRect = D2D1::RectF(
+		static_cast<FLOAT>(rc.left) / dpiScaleX_,
+		static_cast<FLOAT>(rc.top) / dpiScaleY_,
+		static_cast<FLOAT>(rc.right - rc.left) / dpiScaleX_,
+		static_cast<FLOAT>(rc.bottom - rc.top) / dpiScaleY_
+	);*/
 }
 
 bool MainWindow::ProcessMessage()

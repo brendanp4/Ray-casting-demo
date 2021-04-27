@@ -39,33 +39,32 @@ void Game::Go()
 void Game::UpdateModel()
 {
 	if (!paused) {
-		mLocX = wnd.mouse.GetPosX();
-		mLocY = wnd.mouse.GetPosY();
-		player.Update(mLocX, mLocY);
+		//mLocX = wnd.mouse.GetPosX();
+		//mLocY = wnd.mouse.GetPosY();
+		//player.Update(mLocX, mLocY);
 
+		if (wnd.kbd.KeyIsPressed(VK_RIGHT)) {
+			player.LookRight();
+		}
+		if (wnd.kbd.KeyIsPressed(VK_LEFT)) {
+			player.LookLeft();
+		}
 		if (wnd.kbd.KeyIsPressed('W')) {
-			rY -= 5;
+			rX += player.MoveForwardX() * 2;
+			rY += player.MoveForwardY() * 2;
 		}
 		if (wnd.kbd.KeyIsPressed('S')) {
-			rY += 5;
+			rY += 1;
 		}
 		if (wnd.kbd.KeyIsPressed('A')) {
-			rX -= 5;
+			rX -= 1;
 		}
 		if (wnd.kbd.KeyIsPressed('D')) {
-			rX += 5;
+			rX += 1;
 		}
-
-		red.Update(rX, rY);
-
-
-		if (wnd.mouse.LeftIsPressed()) {
-			int x = wnd.mouse.GetPosX();
-			int y = wnd.mouse.GetPosY();
-			field.OnShadeClick(x, y);
+		if (wnd.kbd.KeyIsPressed('M')) {
+			toggleMap(mapOpen);
 		}
-
-
 		if (wnd.kbd.KeyIsPressed(VK_SHIFT)) {
 			if (!shift) {
 				shift = true;
@@ -75,7 +74,25 @@ void Game::UpdateModel()
 				shift = false;
 			}
 		}
+		red.Update(rX, rY);
+
+
+		if (wnd.mouse.LeftIsPressed()) {
+			int x = wnd.mouse.GetPosX();
+			int y = wnd.mouse.GetPosY();
+			field.OnShadeClick(x, y);
+		}
+		
 	}
+
+
+	std::string angle = std::to_string(player.GetRayAngle()) + " degrees";
+	std::string coordx = std::to_string(player.MoveForwardX());
+	std::string coordy = std::to_string(player.MoveForwardY());
+	std::string coords = coordx +  " " +coordy;
+	wnd.SetText(coords);
+	
+
 
 	if (wnd.kbd.KeyIsPressed(VK_SPACE)) {
 		if (!paused) {
@@ -91,12 +108,28 @@ void Game::UpdateModel()
 
 }
 
+void Game::toggleMap(bool & mapOpen)
+{
+	if (mapOpen) {
+		mapOpen = false;
+	}
+	else
+	{
+		mapOpen = true;
+	}
+}
+
 void Game::ComposeFrame()
 {
-	field.Draw(gfx);
-	player.Draw(gfx);
-	red.Draw(gfx);
-	if (shift) {
-		player.CastRay(red, gfx, field);
+	if (mapOpen) {
+		field.Draw(gfx);
+		//player.Draw(gfx);
+		red.Draw(gfx);
 	}
+	player.CastRay(red, gfx, field);
+	if (!mapOpen) {
+		player.DrawPlayArea(gfx, player.rays);
+	}
+	
+	
 }

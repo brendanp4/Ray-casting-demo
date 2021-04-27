@@ -25,6 +25,11 @@
 #include "Mouse.h"
 #include "ChiliException.h"
 #include <string>
+#include <d2d1.h>
+#include <dwrite.h>
+#pragma comment(lib, "d2d1.lib")
+#pragma comment(lib, "dwrite.lib") 
+
 
 // for granting special access to hWnd only for Graphics constructor
 class HWNDKey
@@ -37,6 +42,7 @@ protected:
 	HWNDKey() = default;
 protected:
 	HWND hWnd = nullptr;
+	HWND hWndExample = nullptr;
 };
 
 class MainWindow : public HWNDKey
@@ -57,6 +63,27 @@ public:
 	bool IsActive() const;
 	bool IsMinimized() const;
 	void ShowMessageBox( const std::wstring& title,const std::wstring& message ) const;
+
+	// Write text functions
+	void SetText(std::string a);
+	void ShowValues(HINSTANCE hInst);
+
+	void CreateDeviceIndependentResources();
+	void CreateDeviceResources(HWND hwnd_);
+	void DiscardDeviceResources();
+	void DrawText();
+
+
+	template <class T> void SafeRelease(T **ppT)
+	{
+		if (*ppT)
+		{
+			(*ppT)->Release();
+			*ppT = NULL;
+		}
+	}
+
+
 	void Kill()
 	{
 		PostQuitMessage( 0 );
@@ -74,8 +101,26 @@ private:
 public:
 	Keyboard kbd;
 	Mouse mouse;
+	LPCWSTR angle = L"Test 1";
+	LPCWSTR test = L"Test 2";
+	bool hit = true;
 private:
 	static constexpr wchar_t* wndClassName = L"Chili DirectX Framework Window";
 	HINSTANCE hInst = nullptr;
 	std::wstring args;
+
+	// Write text variables
+
+	//std::string angle = "Test";
+	
+
+	IDWriteFactory* pDWriteFactory_;
+	IDWriteTextFormat* pTextFormat_;
+
+	const wchar_t* wszText_;
+	UINT32 cTextLength_;
+
+	ID2D1Factory* pD2DFactory_;
+	ID2D1HwndRenderTarget* pRT_;
+	ID2D1SolidColorBrush* pBlackBrush_;
 };

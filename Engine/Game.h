@@ -26,6 +26,7 @@
 #include "Cursor.h"
 #include "RDot.h"
 #include "Field.h"
+#include <string>
 
 class Game
 {
@@ -40,6 +41,8 @@ private:
 	/********************************/
 	/*  User Functions              */
 	/********************************/
+	void toggleMap(bool& mapOpen);
+
 private:
 	MainWindow& wnd;
 	Graphics gfx;
@@ -52,6 +55,7 @@ private:
 
 	bool paused = false;
 	bool shift = false;
+	bool mapOpen = true;
 	
 	
 	// Coordinates for blue dot

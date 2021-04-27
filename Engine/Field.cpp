@@ -57,8 +57,6 @@ void Field::Draw(Graphics& gfx)
 
 bool Field::IsInCell(int x, int y)
 {
-	//Cell current = CellAt(x, y);
-
 	if (CellAt(x, y).shaded == true) {
 		return true;
 	}
