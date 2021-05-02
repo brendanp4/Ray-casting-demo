@@ -50,8 +50,8 @@ void Game::UpdateModel()
 			player.LookLeft();
 		}
 		if (wnd.kbd.KeyIsPressed('W')) {
-			rX += player.MoveForwardX() * 2;
-			rY += player.MoveForwardY() * 2;
+			rX += player.MoveForwardX();
+			rY += player.MoveForwardY();
 		}
 		if (wnd.kbd.KeyIsPressed('S')) {
 			rY += 1;
@@ -74,7 +74,7 @@ void Game::UpdateModel()
 				shift = false;
 			}
 		}
-		red.Update(rX, rY);
+		red.Update(int(rX), int(rY));
 
 
 		if (wnd.mouse.LeftIsPressed()) {
@@ -90,7 +90,7 @@ void Game::UpdateModel()
 	std::string coordx = std::to_string(player.MoveForwardX());
 	std::string coordy = std::to_string(player.MoveForwardY());
 	std::string coords = coordx +  " " +coordy;
-	wnd.SetText(coords);
+	wnd.SetText(angle);
 	
 
 

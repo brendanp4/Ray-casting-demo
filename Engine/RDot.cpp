@@ -24,8 +24,8 @@ void RDot::Update(int x, int y)
 		orgX = x;
 		orgY = y;
 	}
-	pos.x = x;
-	pos.y = y;
+	pos.x = float(x);
+	pos.y = float(y);
 }
 
 int RDot::GetXCoord()

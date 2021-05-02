@@ -141,7 +141,6 @@
     <ClInclude Include="Colors.h" />
     <ClInclude Include="Cursor.h" />
     <ClInclude Include="DXErr.h" />
-    <ClInclude Include="Environment.h" />
     <ClInclude Include="Field.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Graphics.h" />
@@ -157,7 +156,6 @@
   <ItemGroup>
     <ClCompile Include="Cursor.cpp" />
     <ClCompile Include="DXErr.cpp" />
-    <ClCompile Include="Environment.cpp" />
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Graphics.cpp" />

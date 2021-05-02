@@ -62,8 +62,8 @@ private:
 	int mLocX = 300;
 	int mLocY = 300;
 	// Coordinates for blue dot
-	int rX = 300;
-	int rY = 300;
+	double rX = 300;
+	double rY = 300;
 
 
 

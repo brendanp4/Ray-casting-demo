@@ -9,8 +9,8 @@ class Ray
 {
 public:
 	bool bHitWall = false;
-	int distanceToWall = 200;
-	const int rayCount = 80;
+	double distanceToWall = 100;
+	const int rayCount = 160;
 };
 
 class Cursor
@@ -28,7 +28,7 @@ public:
 	void MoveBackward();
 	void LookRight();
 	void LookLeft();
-	static constexpr int rayCount = 80;
+	static constexpr int rayCount = 160;
 	Ray rays[rayCount];
 private:
 	//Origin coordinates
@@ -40,8 +40,8 @@ private:
 	//Radius length
 	int radius = 5;
 
-	double forwardX;
-	double forwardY;
+	double forwardX = 0;
+	double forwardY = 0;
 
 	//
 	static constexpr int depth = 100;
