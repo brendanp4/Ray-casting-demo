@@ -37,3 +37,43 @@ int RDot::GetYCoord()
 {
 	return orgY;
 }
+
+void RDot::DetectCollision(Field& field)
+{
+	int topY = (orgY - 3) / 20;
+	int topX = orgX / 20;
+	int botY = (orgY + 3) / 20;
+	int botX = orgX / 20;
+	int leftX = (orgX - 3) / 20;
+	int leftY = orgY / 20;
+	int rightX = (orgX + 3) / 20;
+	int rightY = orgY / 20;
+	if (field.IsInCell(topX, topY)) {
+		cTop = true;
+	}
+	else
+	{
+		cTop = false;
+	}
+	if (field.IsInCell(botX, botY)) {
+		cBottom = true;
+	}
+	else
+	{
+		cBottom = false;
+	}
+	if (field.IsInCell(leftX, leftY)) {
+		cLeft = true;
+	}
+	else
+	{
+		cLeft = false;
+	}
+	if (field.IsInCell(rightX, rightY)) {
+		cRight = true;
+	}
+	else
+	{
+		cRight = false;
+	}
+}

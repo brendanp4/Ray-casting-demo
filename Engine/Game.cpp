@@ -42,7 +42,6 @@ void Game::UpdateModel()
 		//mLocX = wnd.mouse.GetPosX();
 		//mLocY = wnd.mouse.GetPosY();
 		//player.Update(mLocX, mLocY);
-
 		if (wnd.kbd.KeyIsPressed(VK_RIGHT)) {
 			player.LookRight();
 		}
@@ -50,8 +49,22 @@ void Game::UpdateModel()
 			player.LookLeft();
 		}
 		if (wnd.kbd.KeyIsPressed('W')) {
-			rX += player.MoveForwardX();
-			rY += player.MoveForwardY();
+			red.DetectCollision(field);
+			if (red.cTop || red.cBottom)
+			{
+				rX += player.MoveForwardX();
+				rY -= player.MoveForwardY();
+			}
+			if (red.cLeft || red.cRight)
+			{
+				rX -= player.MoveForwardX();
+				rY += player.MoveForwardY();
+			}
+			else
+			{
+				rX += player.MoveForwardX();
+				rY += player.MoveForwardY();
+			}
 		}
 		if (wnd.kbd.KeyIsPressed('S')) {
 			rY += 1;

@@ -26,14 +26,14 @@ void Cursor::DrawPlayArea(Graphics & gfx, Ray rays[])
 
 		for (int y = 0; y < Graphics::ScreenHeight; y++) {
 			if (y <= ceiling) {
-				for (int j = 0; j < 5; j++) {
-					gfx.PutPixel((i * 5) + j, y, 190, 190, 190);
+				for (int j = 0; j < 2; j++) {
+					gfx.PutPixel((i * 2) + j, y, 190, 190, 190);
 				}
 			}
 
 			else if (y > ceiling && y <= floor) {
-				for (int j = 0; j < 5; j++) {
-					gfx.PutPixel((i * 5) + j, y, 160, 160, 55);
+				for (int j = 0; j < 2; j++) {
+					gfx.PutPixel((i * 2) + j, y, 160, 160, 55);
 				}
 			}
 
@@ -42,8 +42,8 @@ void Cursor::DrawPlayArea(Graphics & gfx, Ray rays[])
 	
 				int gradientR = int(float(y) / 3.5);
 				
-				for (int j = 0; j < 5; j++) {
-					gfx.PutPixel((i * 5) + j, y, 170 - gradientR, 170 - gradientR, 170 - gradientR);
+				for (int j = 0; j < 2; j++) {
+					gfx.PutPixel((i * 2) + j, y, 170 - gradientR, 170 - gradientR, 170 - gradientR);
 					
 				}
 			}
@@ -80,12 +80,8 @@ void Cursor::CastRay(RDot & dot, Graphics& gfx, Field& field)
 		rayAngle =  (playerAngle - dFov / 2.0) + (double(f) / double(rayCount)) * dFov;
 		double unitRayX = cos(rayAngle);
 		double unitRayY = sin(rayAngle);
-		
 
-		bool bHitWall = false;
-		double distToWall = double(depth);
-
-		double ca;
+		double ca = 0;
 
 		double stepSize = 0.1;
 		double counter = 0.0;
@@ -109,7 +105,7 @@ void Cursor::CastRay(RDot & dot, Graphics& gfx, Field& field)
 				if (ca > (2.0 * 3.14159)) {
 					ca -= (2.0 * 3.14159);
 				}
-				distToWall = double(counter) * cos(ca);
+				double distToWall = counter * cos(ca);
 				rays[f].bHitWall = true;
 				rays[f].distanceToWall = distToWall;
 

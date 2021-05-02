@@ -10,7 +10,7 @@ class Ray
 public:
 	bool bHitWall = false;
 	double distanceToWall = 100;
-	const int rayCount = 160;
+	const int rayCount = 400;
 };
 
 class Cursor
@@ -28,7 +28,7 @@ public:
 	void MoveBackward();
 	void LookRight();
 	void LookLeft();
-	static constexpr int rayCount = 160;
+	static constexpr int rayCount = 400;
 	Ray rays[rayCount];
 private:
 	//Origin coordinates
@@ -46,7 +46,7 @@ private:
 	//
 	static constexpr int depth = 100;
 	
-	double dFov = 3.14159f / 4.0;
+	double dFov = 3.14159f / 3.0;
 	double rayAngle = 0;
 	double inputAngle = 0;
 	double playerAngle = 0;
