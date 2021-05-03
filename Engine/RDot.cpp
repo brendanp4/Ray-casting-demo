@@ -8,13 +8,34 @@ void RDot::Draw(Graphics & gfx)
 			int x = i - radius;
 			int y = j - radius;
 			if (x * x + y * y <= radius * radius + 1) {
-				gfx.PutPixel(x + orgX, y + orgY, 185, 30, 0);
+				gfx.PutPixel(x + int(orgX), y + int(orgY), 185, 30, 0);
 			}
 		}
 	}
 }
 
-void RDot::Update(int x, int y)
+void RDot::DrawCrosshair(Graphics & gfx)
+{
+	// center coordinates
+	int centerX = Graphics::ScreenWidth / 2;
+	int centerY = Graphics::ScreenHeight / 2;
+	// crosshair radius
+	int radius = 5;
+
+	for (int i = -radius; i < radius + 1; i++) {
+		gfx.PutPixel(centerX + i, centerY, 255, 255, 255);
+	}
+	for (int i = -radius; i < radius + 1; i++) {
+		gfx.PutPixel(centerX, centerY + i, 255, 255, 255);
+	}
+}
+
+void RDot::Shoot(Graphics & gfx)
+{
+
+}
+
+void RDot::Update(double x, double y)
 {
 	if (orgX - radius < 5) {
 		orgX = orgX - radius;
@@ -24,30 +45,31 @@ void RDot::Update(int x, int y)
 		orgX = x;
 		orgY = y;
 	}
+	
 	pos.x = float(x);
 	pos.y = float(y);
 }
 
-int RDot::GetXCoord()
+double RDot::GetXCoord()
 {
 	return orgX;
 }
 
-int RDot::GetYCoord()
+double RDot::GetYCoord()
 {
 	return orgY;
 }
 
 void RDot::DetectCollision(Field& field)
 {
-	int topY = (orgY - 3) / 20;
-	int topX = orgX / 20;
-	int botY = (orgY + 3) / 20;
-	int botX = orgX / 20;
-	int leftX = (orgX - 3) / 20;
-	int leftY = orgY / 20;
-	int rightX = (orgX + 3) / 20;
-	int rightY = orgY / 20;
+	int topY = (int(orgY) - 3) / 20;
+	int topX = int(orgX) / 20;
+	int botY = (int(orgY) + 3) / 20;
+	int botX = int(orgX) / 20;
+	int leftX = (int(orgX) - 3) / 20;
+	int leftY = int(orgY) / 20;
+	int rightX = (int(orgX) + 3) / 20;
+	int rightY = int(orgY) / 20;
 	if (field.IsInCell(topX, topY)) {
 		cTop = true;
 	}

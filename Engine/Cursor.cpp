@@ -59,8 +59,8 @@ void Cursor::Update()
 
 void Cursor::CastRay(RDot & dot, Graphics& gfx, Field& field)
 {
-	int playerX = dot.GetXCoord();
-	int playerY = dot.GetYCoord();
+	double playerX = dot.GetXCoord();
+	double playerY = dot.GetYCoord();
 	
 
 	int start = rayCount / 2;

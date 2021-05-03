@@ -1,4 +1,5 @@
 #include "Field.h"
+#include <fstream>
 
 void Field::Cell::Shade()
 {
@@ -64,6 +65,28 @@ bool Field::IsInCell(int x, int y)
 		return false;
 	}
 	
+}
+
+void Field::WriteToFile()
+{
+	std::ofstream map;
+	map.open("map.txt");
+	int counter = 1;
+	for (Cell cell : grid) {
+		if (cell.shaded) {
+			map << "1 ";
+		}
+		else
+		{
+			map << "0 ";
+		}
+		if (counter == 40) {
+			map << "\n";
+			counter = 0;
+		}
+		counter++;
+	}
+	map.close();
 }
 
 

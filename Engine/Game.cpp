@@ -52,22 +52,23 @@ void Game::UpdateModel()
 			red.DetectCollision(field);
 			if (red.cTop || red.cBottom)
 			{
-				rX += player.MoveForwardX();
-				rY -= player.MoveForwardY();
+				rX += player.MoveForwardX() / 2.0;
+				rY -= player.MoveForwardY() / 2.0;
 			}
-			if (red.cLeft || red.cRight)
+			else if (red.cLeft || red.cRight)
 			{
-				rX -= player.MoveForwardX();
-				rY += player.MoveForwardY();
+				rX -= player.MoveForwardX() / 2.0;
+				rY += player.MoveForwardY() / 2.0;
 			}
 			else
 			{
-				rX += player.MoveForwardX();
-				rY += player.MoveForwardY();
+				rX += player.MoveForwardX() / 2.0;
+				rY += player.MoveForwardY() / 2.0;
 			}
 		}
 		if (wnd.kbd.KeyIsPressed('S')) {
-			rY += 1;
+			rX -= player.MoveForwardX();
+			rY -= player.MoveForwardY();
 		}
 		if (wnd.kbd.KeyIsPressed('A')) {
 			rX -= 1;
@@ -78,6 +79,9 @@ void Game::UpdateModel()
 		if (wnd.kbd.KeyIsPressed('M')) {
 			toggleMap(mapOpen);
 		}
+		if (wnd.kbd.KeyIsPressed('P')) {
+			field.WriteToFile();
+		}
 		if (wnd.kbd.KeyIsPressed(VK_SHIFT)) {
 			if (!shift) {
 				shift = true;
@@ -87,7 +91,7 @@ void Game::UpdateModel()
 				shift = false;
 			}
 		}
-		red.Update(int(rX), int(rY));
+		red.Update(rX, rY);
 
 
 		if (wnd.mouse.LeftIsPressed()) {
@@ -142,6 +146,7 @@ void Game::ComposeFrame()
 	player.CastRay(red, gfx, field);
 	if (!mapOpen) {
 		player.DrawPlayArea(gfx, player.rays);
+		red.DrawCrosshair(gfx);
 	}
 	
 	

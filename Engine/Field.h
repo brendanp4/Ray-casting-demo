@@ -1,5 +1,6 @@
 #pragma once
 #include "Graphics.h"
+
 class Field
 {
 private:
@@ -28,6 +29,7 @@ public:
 	void OnShadeClick(int x, int y);
 	void Draw(Graphics& gfx);
 	bool IsInCell(int x, int y);
+	void WriteToFile();
 
 private:
 	static constexpr int width = 800 / 20;

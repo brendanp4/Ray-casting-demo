@@ -50,10 +50,7 @@ private:
 	double rayAngle = 0;
 	double inputAngle = 0;
 	double playerAngle = 0;
-	double ratio = 0;
-	float fEyeX;
-	float fEyeY;
-	//std::vector<Ray> rays;
+
 	
 
 };
