@@ -74,11 +74,11 @@ void Field::WriteToFile()
 	int counter = 1;
 	for (Cell cell : grid) {
 		if (cell.shaded) {
-			map << "1 ";
+			map << "#";
 		}
 		else
 		{
-			map << "0 ";
+			map << "0";
 		}
 		if (counter == 40) {
 			map << "\n";
@@ -92,5 +92,5 @@ void Field::WriteToFile()
 
 Field::Cell & Field::CellAt(int x, int y)
 {
-	return grid[y * height + x];
+	return grid[y * width + x];
 }
